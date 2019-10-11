@@ -749,10 +749,6 @@ int ambassadorHandler(struct gameState *state, int choice1, int choice2, int cur
 	      j++;
 	    }
 	}
-      if (j < choice2)
-	{
-	  return -1;
-	}
 
       if (DEBUG)
 	printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][choice1]);
@@ -775,7 +771,7 @@ int ambassadorHandler(struct gameState *state, int choice1, int choice2, int cur
       	 //discard played card from hand
               discardCard(handPos, currentPlayer, state, 0);
       //each other player gains a copy of revealed card
-      for (i = 0; i < state->numPlayers; i++)
+      for (i = 1; i < state->numPlayers; i++)
 	{
 	  if (i != currentPlayer)
 	    {
