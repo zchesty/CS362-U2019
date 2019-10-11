@@ -798,7 +798,7 @@ void assignTributeCard(struct gameState *state, int *tributeRevealedCards, int i
 
 void tributeHandler(struct gameState *state, int currentPlayer, int nextPlayer) {
   int i;
-  int tributeRevealedCards[2] = {-1, -1};
+  int tributeRevealedCards[2];
 
     if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
         if (state->deckCount[nextPlayer] > 0){
@@ -833,7 +833,7 @@ void tributeHandler(struct gameState *state, int currentPlayer, int nextPlayer) 
         if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold){//Treasure cards
           state->coins += 2;
         }
-        else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall){//Victory Card Found
+        else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province){//Victory Card Found
           drawCard(currentPlayer, state);
           drawCard(currentPlayer, state);
         }
