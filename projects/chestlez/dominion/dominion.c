@@ -851,6 +851,47 @@ void tributeHandler(struct gameState *state, int currentPlayer, int nextPlayer) 
       }
 }
 
+int mineHandler(struct gameState *state, int choice1, int choice2, int currentPlayer) {
+      int i;
+      int j;
+      int hasCard = 0;
+      j = state->hand[currentPlayer][choice1];  //store card we will trash
+
+      if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
+	{
+	  return -1;
+	}
+
+      if (choice2 > treasure_map || choice2 < curse)
+	{
+	  return -1;
+	}
+
+      if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
+	{
+	  return -1;
+	}
+
+	//check if card is in hand
+	for (i = 0; i < state->handCount[currentPlayer]; i++)
+    	{
+    	  if (state->hand[currentPlayer][i] == j)
+    	    {
+    	      hasCard = 1;
+    	    }
+    	}
+    if (hasCard) {
+      gainCard(choice2, state, 2, currentPlayer);
+
+      //trash
+      discardCard(choice1, currentPlayer, state, 1);
+      return 0;
+    }
+    else {
+      return 0;
+    }
+}
+
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
   int i;
@@ -861,6 +902,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   int currentPlayer = whoseTurn(state);
   int nextPlayer = currentPlayer + 1;
   int ambassadorReturnValue;
+  int mineReturnValue;
 
   int temphand[MAX_HAND];// moved above the if statement
   int drawntreasure=0;
@@ -975,39 +1017,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return -1;
 			
     case mine:
-      j = state->hand[currentPlayer][choice1];  //store card we will trash
+        mineReturnValue = mineHandler(state, choice1, choice2, currentPlayer);
+        return mineReturnValue;
 
-      if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
-	{
-	  return -1;
-	}
-		
-      if (choice2 > treasure_map || choice2 < curse)
-	{
-	  return -1;
-	}
-
-      if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
-	{
-	  return -1;
-	}
-
-      gainCard(choice2, state, 2, currentPlayer);
-
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-
-      //discard trashed card
-      for (i = 0; i < state->handCount[currentPlayer]; i++)
-	{
-	  if (state->hand[currentPlayer][i] == j)
-	    {
-	      discardCard(i, currentPlayer, state, 0);			
-	      break;
-	    }
-	}
-			
-      return 0;
 			
     case remodel:
       j = state->hand[currentPlayer][choice1];  //store card we will trash
