@@ -849,7 +849,7 @@ int mineHandler(struct gameState *state, int choice1, int choice2, int currentPl
       int hasCard = 0;
       j = state->hand[currentPlayer][choice1];  //store card we will trash
 
-      if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
+      if (state->hand[currentPlayer][choice1] <= copper || state->hand[currentPlayer][choice1] >= gold)
 	{
 	  return -1;
 	}
@@ -876,7 +876,7 @@ int mineHandler(struct gameState *state, int choice1, int choice2, int currentPl
       gainCard(choice2, state, 2, currentPlayer);
 
       //trash
-      discardCard(choice1, currentPlayer, state, 1);
+      discardCard(choice1, currentPlayer, state, 0);
       return 0;
     }
     else {
