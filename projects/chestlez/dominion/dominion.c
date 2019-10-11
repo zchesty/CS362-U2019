@@ -676,7 +676,6 @@ void baronHandler(struct gameState *state, int choice1, int currentPlayer) {
             if (supplyCount(estate, state) > 0){
               baronGainEstate(state, currentPlayer);
             }
-            card_not_discarded = 0;//Exit the loop
           }
 
           else{
@@ -685,7 +684,7 @@ void baronHandler(struct gameState *state, int choice1, int currentPlayer) {
         }
           }
           else{
-        if (supplyCount(estate, state) > 0){
+        if (supplyCount(estate, state) >= 0){
             baronGainEstate(state, currentPlayer);
         }
           }
