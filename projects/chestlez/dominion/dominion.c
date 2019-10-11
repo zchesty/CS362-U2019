@@ -724,14 +724,11 @@ void minionHandler(struct gameState *state, int choice1, int choice2, int curren
 	  //other players discard hand and redraw if hand size > 4
 	  for (i = 0; i < state->numPlayers; i++)
 	    {
-	      if (i != currentPlayer)
-		{
-		  if ( state->handCount[i] > 4 )
+		  if ( state->handCount[i] >= 4 )
 		    {
                 minionDiscardHand(state, i, handPos);
 		    }
 		}
-	    }
 	}
 }
 
