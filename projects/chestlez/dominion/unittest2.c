@@ -20,14 +20,14 @@ void minionTest() {
     int i;
 	int seed = 1000;
 	int numPlayers = 2;
-	struct gameState state, test1, test2, test3;
+	struct gameState state, test1, test2;
 	int k[10] = {baron, feast, gardens, minion, mine, steward,
 			sea_hag, tribute, ambassador, council_room};
 
 	initializeGame(numPlayers, k, seed, &state);
 
     printf("\nTesting Minion Card\n\n");
-    printf("\n\n_____TEST 1 - player player picks up 4 cards when they choose \n\n");
+    printf("\n\n_____TEST 1 - player gains 2 coins when they choose choice1 \n\n");
 
     memcpy(&test1, &state, sizeof(struct gameState));
 
@@ -36,9 +36,6 @@ void minionTest() {
     int choice2 = 0;
     int handPos = 4;
 
-
-    state.supplyCount[estate] = 0;
-    test1.supplyCount[estate] = 0;
       for (i = 0; i < 5; i++)
     {
       test1.hand[currentPlayer][i] = copper;
@@ -56,6 +53,54 @@ void minionTest() {
     else {
         printf("Passed - gains 2 coins when choice1 is true\n");
     }
+
+    printf("\n\n_____TEST 2 - player picks up 4 cards when they choose choice2\n\n");
+
+    memcpy(&test2, &state, sizeof(struct gameState));
+
+    currentPlayer = whoseTurn(&test1);
+    choice1 = 0;
+    choice2 = 1;
+    handPos = 4;
+
+      for (i = 0; i < 5; i++)
+    {
+      test2.hand[currentPlayer][i] = copper;
+    }
+    test2.hand[currentPlayer][handPos] = minion;
+
+   test2.handCount[1] = 4;
+
+    int opposingDeckCount = test2.deckCount[1] ;// opposing player number
+
+    minionHandler(&test2, choice1, choice2, currentPlayer, handPos);
+
+
+    //Check that an estate was not able to be drawn there are none in the pile
+    fail = assert(test2.deckCount[currentPlayer],state.deckCount[currentPlayer] - 4);
+
+    if(fail) {
+        printf("Failed - player does not draw 4 cards from deck\n");
+    }
+    else {
+        printf("Passed - player draws 4 cards from deck the correct number \n");
+    }
+
+    printf("\n\n_____TEST 3 - opposing players do not draw if they have 4 cards\n\n");
+
+
+    fail = assert(opposingDeckCount,test2.deckCount[1]);
+
+        if(fail) {
+            printf("Failed - opposint player is drawing when they only have 4 cards in hand\n");
+        }
+        else {
+            printf("Passed - opposing players are not drawing when they have 4 cards in hand\n");
+        }
+
+
+
+
 }
 
 int main(int argc, char *argv[])
