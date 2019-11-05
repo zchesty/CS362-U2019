@@ -32,30 +32,93 @@ void ambassadorTest() {
     memcpy(&test1, &state, sizeof(struct gameState));
 
     int currentPlayer = whoseTurn(&test1);
-    int choice1 = 1;
-    int choice2 = 0;
+    int choice1 = 1; //hand number
+    int choice2 = 0; //number to return to supply
     int handPos = 4;
 
-
-    state.supplyCount[estate] = 0;
-    test1.supplyCount[estate] = 0;
       for (i = 0; i < 5; i++)
     {
       test1.hand[currentPlayer][i] = copper;
     }
-    test1.hand[currentPlayer][handPos] = minion;
+    test1.hand[currentPlayer][handPos] = ambassador;
+    test1.hand[currentPlayer][1] = mine;
 
-    minionHandler(&test1, choice1, choice2, currentPlayer, handPos);
+    int ambassadorReturnValue  = ambassadorHandler(&test1, handPos, choice2, currentPlayer, handPos);
 
     //Check that an estate was not able to be drawn there are none in the pile
-    int fail = assert(test1.coins, state.coins + 2);
+    int fail = assert(ambassadorReturnValue, -1);
 
     if(fail) {
-        printf("Failed - does not gain 2 coins when choice1 is true\n");
+        printf("Failed - expected to get error when player card choice == handpos\n");
     }
     else {
-        printf("Passed - gains 2 coins when choice1 is true\n");
+        printf("Passed - got error when player card choice == handpos\n");
     }
+
+        printf("\n\n_____TEST 2 - player cannot return more copies of a card than they possess in their hand \n\n");
+
+        memcpy(&test3, &state, sizeof(struct gameState));
+
+        currentPlayer = whoseTurn(&test3);
+        choice1 = 1; //hand number
+        choice2 = 2; //number to return to supply
+        handPos = 4;
+
+      
+          for (i = 0; i < 5; i++)
+        {
+          test3.hand[currentPlayer][i] = copper;
+        }
+        test3.hand[currentPlayer][handPos] = ambassador;
+        test3.hand[currentPlayer][1] = mine;
+
+        test3.supplyCount[mine] = 6;
+
+        int countOfSupplyMines = test3.supplyCount[mine];
+        ambassadorReturnValue  = ambassadorHandler(&test3, choice1, choice2, currentPlayer, handPos);
+
+        //Check that an estate was not able to be drawn there are none in the pile
+        fail = assert(test3.supplyCount[mine], countOfSupplyMines - 1);
+
+        if(fail) {
+            printf("Failed - player was able to return more cards than they had in their hand\n");
+        }
+        else {
+            printf("Passed - player was not able to return more cards than they possess\n");
+        }
+
+
+        printf("\n\n_____TEST 3 - a player may not recieve a card when they must draw \n\n");
+
+        memcpy(&test2, &state, sizeof(struct gameState));
+
+        currentPlayer = 1;
+        choice1 = 1; //hand number
+        choice2 = 1; //number to return to supply
+        handPos = 4;
+
+
+          for (i = 0; i < 5; i++)
+        {
+          test2.hand[1][i] = copper;
+        }
+        test2.hand[1][handPos] = ambassador;
+        test2.hand[1][1] = mine;
+
+        test2.supplyCount[mine] = 6;
+
+        int oppositionPlayerDiscardCount = test2.discardCount[0];
+        ambassadorReturnValue  = ambassadorHandler(&test2, choice1, choice2, 1, handPos);
+
+        //Check that an estate was not able to be drawn there are none in the pile
+        fail = assert(test2.discardCount[0], oppositionPlayerDiscardCount + 1);
+
+        if(fail) {
+            printf("Failed - opposing player should have drawn card\n");
+        }
+        else {
+            printf("Passed - opposiing player drew a card like they should\n");
+        }
 }
 
 int main(int argc, char *argv[])
