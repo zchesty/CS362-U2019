@@ -26,7 +26,7 @@ void tributeTest() {
 	initializeGame(numPlayers, k, seed, &state);
 
     printf("\nTesting tribute Card\n\n");
-    printf("\n\n_____TEST 1 - opposing player only has 1 card to display \n\n");
+    printf("\n\n_____TEST 1 - opposing player only has 1 card to display should gain 2 coins and nothing else \n\n");
 
     memcpy(&test1, &state, sizeof(struct gameState));
 
@@ -38,20 +38,28 @@ void tributeTest() {
 
     test1.deck[opposingPlayer][0] = copper;
 
-    printf("%d\n", test1.numActions);
+    printf("%d\n", test1.coins);
 
     tributeHandler(&test1, currentPlayer, opposingPlayer);
 
-    printf("%d\n", test1.numActions);
+    printf("%d\n", test1.coins);
 
-    int fail = assert(-1, -1);
+    int fail = assert(test1.coins, state.coins + 2);
 
     if(fail) {
-        printf("Failed - expected to get error when player card choice == handpos\n");
+        printf("Failed - player should gain 2 coins\n");
     }
     else {
-        printf("Passed - got error when player card choice == handpos\n");
+        printf("Passed - player gains 2 coins\n");
     }
+    fail = assert(test1.numActions, state.numActions);
+
+    if(fail) {
+            printf("Failed - player should not have gained any actions\n");
+        }
+        else {
+            printf("Passed - player should did gain any actions\n");
+        }
 }
 
 int main(int argc, char *argv[])
