@@ -27,7 +27,7 @@ void ambassadorTest() {
 	initializeGame(numPlayers, k, seed, &state);
 
     printf("\nTesting Ambassador Card\n\n");
-    printf("\n\n_____TEST 1 - player player picks up 4 cards when they choose \n\n");
+    printf("\n\n_____TEST 1 - test error condtion when parameters are invalid \n\n");
 
     memcpy(&test1, &state, sizeof(struct gameState));
 
