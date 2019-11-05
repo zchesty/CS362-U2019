@@ -17,41 +17,78 @@ int assert(int got, int want) {
 }
 
 void mineTest() {
+    int i;
 	int seed = 1000;
 	int numPlayers = 2;
-	struct gameState state, test1, test2, test3;
+	struct gameState state, test1, test2;
 	int k[10] = {baron, feast, gardens, minion, mine, steward,
 			sea_hag, tribute, ambassador, council_room};
 
 	initializeGame(numPlayers, k, seed, &state);
 
     printf("\nTesting mine Card\n\n");
-    printf("\n\n_____TEST 1 - opposing player only has 1 card to display \n\n");
+    printf("\n\n_____TEST 1 - able to pick up silver from copper (card costing within 3 from trash card)\n\n");
 
     memcpy(&test1, &state, sizeof(struct gameState));
 
     int currentPlayer = whoseTurn(&test1);
-    int opposingPlayer = 1;
+    int choice1 = 0;
+    int choice2 = silver;
 
-    test1.discardCount[opposingPlayer] = 0;
-    test1.deckCount[opposingPlayer] = 1;
+	  for (i = 0; i < 5; i++)
+	{
+	  test1.hand[currentPlayer][i] = copper;
+	}
 
-    test1.deck[opposingPlayer][0] = copper;
+    int mineResponse = mineHandler(&test1, choice1, choice2, currentPlayer);
 
-    printf("%d\n", test1.numActions);
+    updateCoins(currentPlayer, &test1, 0);
 
-    mineHandler(&test1, currentPlayer, opposingPlayer);
-
-    printf("%d\n", test1.numActions);
-
-    //Check that an estate was not able to be drawn there are none in the pile
-    int fail = assert(-1, -1);
+    int fail = assert(test1.coins, 7);
 
     if(fail) {
-        printf("Failed - expected to get error when player card choice == handpos\n");
+        printf("Failed - unable able to pick up card that is within 3 cost above trash card\n");
     }
     else {
-        printf("Passed - got error when player card choice == handpos\n");
+        printf("Passed -  able to pick up card that is within 3 cost above trash card\n");
+    }
+
+        printf("\n\n_____TEST 2 - able to pick up gold from silver ( card costing within 3 from trash card)\n\n");
+
+        memcpy(&test2, &state, sizeof(struct gameState));
+
+        currentPlayer = whoseTurn(&test2);
+        choice1 = 0;
+        choice2 = gold;
+
+    	  for (i = 0; i < 5; i++)
+    	{
+    	  test2.hand[currentPlayer][i] = silver;
+    	}
+
+        int initPlayedCount = test2.playedCardCount;
+        mineResponse = mineHandler(&test2, choice1, choice2, currentPlayer);
+
+        updateCoins(currentPlayer, &test2, 0);
+
+        fail = assert(test2.coins, 11);
+
+        if(fail) {
+            printf("Failed - unable able to pick up card that is within 3 cost above trash card\n");
+        }
+        else {
+            printf("Passed -  able to pick up card that is within 3 cost above trash card\n");
+        }
+
+    printf("\n\n_____TEST 3 - trashed card goes to the trash \n\n");
+
+    fail = assert(test2.playedCardCount, initPlayedCount);
+
+    if(fail) {
+        printf("Failed - card should not enter played pile\n");
+    }
+    else {
+        printf("Passed - card does not enter played pile\n");
     }
 }
 

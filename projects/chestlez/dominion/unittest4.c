@@ -44,7 +44,6 @@ void tributeTest() {
 
     printf("%d\n", test1.numActions);
 
-    //Check that an estate was not able to be drawn there are none in the pile
     int fail = assert(-1, -1);
 
     if(fail) {

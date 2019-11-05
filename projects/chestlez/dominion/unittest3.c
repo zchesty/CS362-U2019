@@ -45,7 +45,6 @@ void ambassadorTest() {
 
     int ambassadorReturnValue  = ambassadorHandler(&test1, handPos, choice2, currentPlayer, handPos);
 
-    //Check that an estate was not able to be drawn there are none in the pile
     int fail = assert(ambassadorReturnValue, -1);
 
     if(fail) {
@@ -77,7 +76,6 @@ void ambassadorTest() {
         int countOfSupplyMines = test3.supplyCount[mine];
         ambassadorReturnValue  = ambassadorHandler(&test3, choice1, choice2, currentPlayer, handPos);
 
-        //Check that an estate was not able to be drawn there are none in the pile
         fail = assert(test3.supplyCount[mine], countOfSupplyMines - 1);
 
         if(fail) {
@@ -110,7 +108,6 @@ void ambassadorTest() {
         int oppositionPlayerDiscardCount = test2.discardCount[0];
         ambassadorReturnValue  = ambassadorHandler(&test2, choice1, choice2, 1, handPos);
 
-        //Check that an estate was not able to be drawn there are none in the pile
         fail = assert(test2.discardCount[0], oppositionPlayerDiscardCount + 1);
 
         if(fail) {

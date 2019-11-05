@@ -44,7 +44,6 @@ void minionTest() {
 
     minionHandler(&test1, choice1, choice2, currentPlayer, handPos);
 
-    //Check that an estate was not able to be drawn there are none in the pile
     int fail = assert(test1.coins, state.coins + 2);
 
     if(fail) {
@@ -76,7 +75,6 @@ void minionTest() {
     minionHandler(&test2, choice1, choice2, currentPlayer, handPos);
 
 
-    //Check that an estate was not able to be drawn there are none in the pile
     fail = assert(test2.deckCount[currentPlayer],state.deckCount[currentPlayer] - 4);
 
     if(fail) {

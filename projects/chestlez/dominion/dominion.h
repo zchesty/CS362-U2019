@@ -134,4 +134,6 @@ int ambassadorHandler(struct gameState *state, int choice1, int choice2, int cur
 void tributeHandler(struct gameState *state, int currentPlayer, int nextPlayer);
 int mineHandler(struct gameState *state, int choice1, int choice2, int currentPlayer);
 
+int updateCoins(int player, struct gameState *state, int bonus);
+
 #endif
