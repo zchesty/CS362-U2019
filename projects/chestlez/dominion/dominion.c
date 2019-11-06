@@ -794,7 +794,7 @@ void moveDeckToDiscard(struct gameState *state, int nextPlayer) {
 void assignTributeCard(struct gameState *state, int *tributeRevealedCards, int index, int nextPlayer) {
     tributeRevealedCards[index] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
     state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
-    state->deckCount[nextPlayer]--;
+    //state->deckCount[nextPlayer]--;  MY TEST FAILED UNEXPECTEDLY FROM THIS SO I COMMENTED OUT THIS BUG the deck count is decremented twice
 }
 
 void tributeHandler(struct gameState *state, int currentPlayer, int nextPlayer) {
