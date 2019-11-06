@@ -50,12 +50,12 @@ player: player.c interface.o
 all: playdom player 
 
 unittestresults: baronTest minionTest ambassadorTest tributeTest mineTest
-	./baronTest &> unittestresult.out
-	./minionTest >> unittestresult.out
-	./ambassadorTest >> unittestresult.out
-	./tributeTest >> unittestresult.out
-	./mineTest >> unittestresult.out
-	gcov dominion.c -b -f >> unittestresult.out
+	./baronTest &> unittestresults.out
+	./minionTest >> unittestresults.out
+	./ambassadorTest >> unittestresults.out
+	./tributeTest >> unittestresults.out
+	./mineTest >> unittestresults.out
+	gcov dominion.c -b -f >> unittestresults.out
 
 
 clean:
