@@ -49,5 +49,14 @@ player: player.c interface.o
 
 all: playdom player 
 
+unittestresults: baronTest minionTest ambassadorTest tributeTest mineTest
+	./baronTest
+	./minionTest
+	./ambassadorTest
+	./tributeTest
+	./mineTest
+	gcov dominion.c -b -f &> unittestresult.out
+
+
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe baronTest minionTest ambassadorTest tributeTest mineTest
