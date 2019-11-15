@@ -676,6 +676,7 @@ void baronHandler(struct gameState *state, int choice1, int currentPlayer) {
             if (supplyCount(estate, state) > 0){
               baronGainEstate(state, currentPlayer);
             }
+            card_not_discarded = 0; //THIS WAS ADDED BACK SO THAT MY TESTS WILL NOT GO INTO INFINITE LOOP - i removed ti for one of my bugs in assignment 2
           }
 
           else{

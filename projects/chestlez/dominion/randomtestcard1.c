@@ -28,7 +28,9 @@ char inputChar()
 
 */
 
-void baronTest(int j) {
+void baronTest(int j, int* passed) {
+
+	printf("%d", *passed);
 	int i;
 	int seed = 1000;
 	int numPlayers = 2;
@@ -39,52 +41,92 @@ void baronTest(int j) {
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &state);
 
-	printf("\nTesting Baron Card\n\n");
-	printf("\n\n_____TEST %d - player cannot pick up a card when estate pile is empty\n\n", j);
+	printf("\n\n_____TEST %d\n\n", j + 1);
 
 	// copy the game state to a test case
 	memcpy(&test, &state, sizeof(struct gameState));
 
-	int player = whoseTurn(&test1);
-
-	state.supplyCount[estate] = rand()%10 +1;
+	int player = whoseTurn(&test);
+	int choice1 = rand()%2;
+	state.supplyCount[estate] = rand()%10;
 	test.supplyCount[estate] = state.supplyCount[estate];
 	  for (i = 0; i < 5; i++)
 	{
-	  test.hand[player][i] = copper;
+	  test.hand[player][i] = rand()%27;
 	}
-
-	baronHandler(&test, 0, player);
-
-	if (state.supplyCount[estate] == 0) {
-		//Check that an estate was not able to be drawn there are none in the pile
-		int fail = assert(test.supplyCount[estate], state.supplyCount[estate]);
-
-		if(fail) {
-			printf("Failed supply of estates is not 0, player picked up an estate and estate pile was empty\n");
-		}
-		else {
-			printf("Passed estate supply is equal to 0, player did not pick up estate\n");
+	int hasEstate = 0;
+	for (i = 0; i < 5; i++)
+	{
+		if (test.hand[player][i] == estate) {
+	  		hasEstate = 1;
+	  		break;
 		}
 	}
-	else {
+
+	baronHandler(&test, choice1, player);
+
+	if (state.supplyCount[estate] > 0 && choice1 == 0) {
+	printf("Choice1 = 1 estates count is greater than 0 player should gain 1 estate\n");
 		int fail = assert(test.supplyCount[estate] + 1, state.supplyCount[estate]);
-
 		if(fail) {
-			printf("Failed - Player should have drawn estate when some are left in pile\n");
+			printf("Failed - estate supply count did not go down by 1\n");
 		}
 		else {
 			printf("Passed - estate supply one less than before baronHandler is called when there are estates left\n");
+			*passed = *passed + 1;
 		}
 	}
+	else if (choice1 == 0) {
+		printf("Choice1 = 0 supply of estates = 0, player should not gain estate\n");
+		int fail = assert(test.supplyCount[estate], state.supplyCount[estate]);
+
+		if(fail) {
+			printf("Failed supply of estates is 0, player picked up an estate and estate pile was empty\n");
+		}
+		else {
+			printf("Passed estate supply is equal to 0, player did not pick up estate\n");
+			*passed = *passed + 1;
+		}
+	}
+	else if (choice1 == 1 && hasEstate == 1) {
+		//gain 4 coins
+		printf("Choice1 = 1 hasEstate = 1 player should  gain 4 coins\n");
+		int fail = assert(test.coins, state.coins + 4);
+
+		if(fail) {
+			printf("Failed player should have gained 4 coins.\n");
+		}
+		else {
+			printf("Passed player gains 4 coins when they have estate\n");
+			*passed = *passed + 1;
+		}
+	}
+	else if (choice1 == 1 && hasEstate == 0) {
+		printf("Choice1 = 1 hasEstate = 0 player should not gain 4 coins\n");
+		//no gain 4 coins
+		int fail = assert(test.coins, state.coins);
+
+		if(fail) {
+			printf("Failed player gained 4 coins when they has no estate\n");
+		}
+		else {
+			printf("Passed player did not get 4 coins\n");
+			*passed = *passed + 1;
+		}
+    	}
 }
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
-    for (int i = 0; i < 10; i++) {
-    	baronTest(i)
+    printf("\nTesting Baron Card\n\n");
+    int passed = 1;
+    int tests = 100;
+    for (int i = 0; i < tests; i++) {
+    	printf("%d\n", passed);
+    	baronTest(i, &passed);
     }
+    printf("test passed: %d out of %d ", passed, tests);
 
     return 0;
 }
