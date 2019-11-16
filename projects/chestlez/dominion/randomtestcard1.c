@@ -15,19 +15,6 @@ int assert(int got, int want) {
     }
 }
 
-char inputChar()
-{
-    return rand()%94 +32;
-}
-
-/*
-	randomize:
-		choice1 0 or 1
-		hand cards random 5 between 0 and 26?
-
-
-*/
-
 void baronTest(int j, int* passed) {
 
 	printf("%d", *passed);
@@ -120,7 +107,7 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
     printf("\nTesting Baron Card\n\n");
-    int passed = 1;
+    int passed = 0;
     int tests = 100;
     for (int i = 0; i < tests; i++) {
     	printf("%d\n", passed);
