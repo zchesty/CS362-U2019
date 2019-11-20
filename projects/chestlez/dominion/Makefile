@@ -29,34 +29,51 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
-baronTest: dominion.o rngs.o unittest1.c
-	gcc -o baronTest unittest1.c dominion.o rngs.o $(CFLAGS)
+baronTestUnit: dominion.o rngs.o unittest1.c
+	gcc -o baronTestUnit unittest1.c dominion.o rngs.o $(CFLAGS)
 
-minionTest: dominion.o rngs.o unittest2.c
-	gcc -o minionTest unittest2.c dominion.o rngs.o $(CFLAGS)
+minionTestUnit: dominion.o rngs.o unittest2.c
+	gcc -o minionTestUnit unittest2.c dominion.o rngs.o $(CFLAGS)
 
-ambassadorTest: dominion.o rngs.o unittest3.c
-	gcc -o ambassadorTest unittest3.c dominion.o rngs.o $(CFLAGS)
+ambassadorTestUnit: dominion.o rngs.o unittest3.c
+	gcc -o ambassadorTestUnit unittest3.c dominion.o rngs.o $(CFLAGS)
 
-tributeTest: dominion.o rngs.o unittest4.c
-	gcc -o tributeTest unittest4.c dominion.o rngs.o $(CFLAGS)
+tributeTestUnit: dominion.o rngs.o unittest4.c
+	gcc -o tributeTestUnit unittest4.c dominion.o rngs.o $(CFLAGS)
 
-mineTest: dominion.o rngs.o unittest5.c
-	gcc -o mineTest unittest5.c dominion.o rngs.o $(CFLAGS)
+mineTestUnit: dominion.o rngs.o unittest5.c
+	gcc -o mineTestUnit unittest5.c dominion.o rngs.o $(CFLAGS)
+
+baronTestRandom: dominion.o rngs.o randomtestcard1.c
+	gcc -o baronTestRandom randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+
+minionTestRandom: dominion.o rngs.o randomtestcard2.c
+	gcc -o minionTestRandom randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+
+tributeTestRandom: dominion.o rngs.o randomtestcard3.c
+	gcc -o tributeTestRandom randomtestcard3.c dominion.o rngs.o $(CFLAGS)
+
+randomtestresults: baronTestRandom minionTestRandom tributeTestRandom
+	./baronTestRandom &> randomtestresults.out
+	./minionTestRandom >> randomtestresults.out
+	./tributeTestRandom >> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+
+unittestresults: baronTestUnit minionTestUnit ambassadorTestUnit tributeTestUnit mineTestUnit
+	./baronTestUnit &> unittestresults.out
+	./minionTestUnit >> unittestresults.out
+	./ambassadorTestUnit >> unittestresults.out
+	./tributeTestUnit >> unittestresults.out
+	./mineTestUnit >> unittestresults.out
+	gcov dominion.c -b -f >> unittestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
 all: playdom player 
 
-unittestresults: baronTest minionTest ambassadorTest tributeTest mineTest
-	./baronTest &> unittestresults.out
-	./minionTest >> unittestresults.out
-	./ambassadorTest >> unittestresults.out
-	./tributeTest >> unittestresults.out
-	./mineTest >> unittestresults.out
-	gcov dominion.c -b -f >> unittestresults.out
+
 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe baronTest minionTest ambassadorTest tributeTest mineTest
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe baronTestRandom minionTestRandom tributeTestRandom minionTestUnit baronTestUnit tributeTestUnit mineTestUnit ambassadorTestUnit
