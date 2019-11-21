@@ -47,7 +47,7 @@ void minionTest(int j, int* passed) {
     }
     test.hand[currentPlayer][handPos] = minion;
 
-    minionHandler(&test, choice1, choice2, currentPlayer, handPos);
+    minionCardEffect(handPos, currentPlayer, choice1, choice2, &test);
 
 	if (choice1) {
 		printf("Player should gain 2 coins \n");

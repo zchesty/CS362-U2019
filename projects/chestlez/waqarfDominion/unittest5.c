@@ -35,12 +35,13 @@ void mineTest() {
     int choice1 = 0;
     int choice2 = silver;
 
+
 	  for (i = 0; i < 5; i++)
 	{
 	  test1.hand[currentPlayer][i] = copper;
 	}
-
-    int mineResponse = mineHandler(&test1, choice1, choice2, currentPlayer);
+	int handPos = 5;
+    int mineResponse = mineCardEffect(choice1, choice2, currentPlayer, handPos, &test1);
 
     updateCoins(currentPlayer, &test1, 0);
 
@@ -67,7 +68,7 @@ void mineTest() {
     	}
 
         int initPlayedCount = test2.playedCardCount;
-        mineResponse = mineHandler(&test2, choice1, choice2, currentPlayer);
+		mineResponse = mineCardEffect(choice1, choice2, currentPlayer, handPos, &test2);
 
         updateCoins(currentPlayer, &test2, 0);
 

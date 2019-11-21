@@ -38,7 +38,7 @@ void tributeTest() {
 
     test1.deck[opposingPlayer][0] = copper;
 
-    tributeHandler(&test1, currentPlayer, opposingPlayer);
+    tributeCardEffect(opposingPlayer, currentPlayer, &test1);
 
     int fail = assert(test1.coins, state.coins + 2);
 
@@ -81,7 +81,7 @@ void tributeTest() {
     test2.deck[opposingPlayer][0] = copper;
     test2.deck[opposingPlayer][1] = estate;
 
-    tributeHandler(&test2, currentPlayer, opposingPlayer);
+    tributeCardEffect(opposingPlayer, currentPlayer, &test2);
 
     fail = assert(test2.coins, state.coins + 2);
 
@@ -122,7 +122,7 @@ void tributeTest() {
     test3.discard[opposingPlayer][0] = mine;
     test3.discard[opposingPlayer][1] = mine;
 
-    tributeHandler(&test3, currentPlayer, opposingPlayer);
+    tributeCardEffect(opposingPlayer, currentPlayer, &test3);
 
     fail = assert(test3.coins, state.coins);
 
@@ -160,7 +160,7 @@ printf("\n\n_____TEST 4 - opposing player has no cards to show\n\n");
     test4.deckCount[opposingPlayer] = 0;
 
 
-    tributeHandler(&test4, currentPlayer, opposingPlayer);
+    tributeCardEffect(opposingPlayer, currentPlayer, &test4);
 
     fail = assert(test4.coins, state.coins);
 
@@ -200,7 +200,7 @@ printf("\n\n_____TEST 4 - opposing player has no cards to show\n\n");
     
         test5.discard[opposingPlayer][0] = copper;
     
-        tributeHandler(&test5, currentPlayer, opposingPlayer);
+        tributeCardEffect(opposingPlayer, currentPlayer, &test5);
     
         fail = assert(test5.coins, state.coins + 2);
     

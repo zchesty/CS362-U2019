@@ -41,7 +41,7 @@ void tributeTest(int j, int* passed) {
 	int card1 = test.deck[opposingPlayer][0];
 	int card2 = test.deck[opposingPlayer][1];
 
-	tributeHandler(&test, currentPlayer, opposingPlayer);
+	tributeCardEffect(opposingPlayer, currentPlayer, &test);
 
 	//cards are the same
 	if (card1 == card2) {

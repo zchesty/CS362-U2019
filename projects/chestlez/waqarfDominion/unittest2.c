@@ -42,7 +42,7 @@ void minionTest() {
     }
     test1.hand[currentPlayer][handPos] = minion;
 
-    minionHandler(&test1, choice1, choice2, currentPlayer, handPos);
+   minionCardEffect(handPos, currentPlayer, choice1, choice2, &test1);
 
     int fail = assert(test1.coins, state.coins + 2);
 
@@ -72,7 +72,7 @@ void minionTest() {
 
     int opposingDeckCount = test2.deckCount[1] ;// opposing player number
 
-    minionHandler(&test2, choice1, choice2, currentPlayer, handPos);
+   minionCardEffect(handPos, currentPlayer, choice1, choice2, &test2);
 
 
     fail = assert(test2.deckCount[currentPlayer],state.deckCount[currentPlayer] - 4);

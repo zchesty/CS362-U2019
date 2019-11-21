@@ -43,7 +43,7 @@ void baronTest() {
 	  test1.hand[player][i] = copper;
 	}
 	
-	baronHandler(&test1, 0, player);
+	baronCardEffect(0, &test1, player);
 
 	//Check that an estate was not able to be drawn there are none in the pile
 	int fail = assert(test1.supplyCount[estate], state.supplyCount[estate]);
@@ -72,7 +72,7 @@ void baronTest() {
     	test2.hand[player][i] = estate;
 
         int initCoin = test2.coins;
-    	baronHandler(&test2, 1, player);
+    	baronCardEffect(1, &test2, player);
 
     	fail = assert(initCoin + 4, test2.coins);
 
@@ -99,7 +99,7 @@ void baronTest() {
             	}
         
                 initCoin = test3.coins;
-            	baronHandler(&test3, 1, player);
+            	baronCardEffect(1, &test3, player);
         
             	fail = assert(initCoin, test3.coins);
         

@@ -50,7 +50,7 @@ void baronTest(int j, int* passed) {
 		}
 	}
 
-	baronHandler(&test, choice1, player);
+	baronCardEffect(choice1, &test, player);
 
 	if (state.supplyCount[estate] > 0 && choice1 == 0) {
 	printf("Choice1 = 1 estates count is greater than 0 player should gain 1 estate\n");
@@ -59,7 +59,7 @@ void baronTest(int j, int* passed) {
 			printf("Failed - estate supply count did not go down by 1\n");
 		}
 		else {
-			printf("Passed - estate supply one less than before baronHandler is called when there are estates left\n");
+			printf("Passed - estate supply one less than before baronCardEffect is called when there are estates left\n");
 			*passed = *passed + 1;
 		}
 	}
