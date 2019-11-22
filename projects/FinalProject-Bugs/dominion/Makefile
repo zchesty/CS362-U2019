@@ -71,7 +71,7 @@ bug10Test: dominion.o rngs.o bug10Test.c
 bug11Test: dominion.o rngs.o bug11Test.c
 	gcc -o bug11Test bug11Test.c dominion.o rngs.o $(CFLAGS)
 
-unittestresults: bug1Test
+unittestresults: bug1Test bug2Test bug3Test bug4Test bug15est bug6Test bug7Test bug8Test bug9Test bug10Test bug11Test
 	./bug1Test &> unittestresults.out
 	./bug2Test &> unittestresults.out
 	./bug3Test &> unittestresults.out
