@@ -15,49 +15,34 @@ int assert(int got, int want) {
 }
 
 void bugTest() {
-    int i;
 	int seed = 1000;
 	int numPlayers = 2;
-	struct gameState state, testState;
+	struct gameState state;
 	int k[10] = {baron, feast, gardens, minion, mine, steward,
 			sea_hag, tribute, ambassador, council_room};
 
 	initializeGame(numPlayers, k, seed, &state);
 
-    printf("\nTesting Bug ####\n\n");
-    printf("_____Test name here\n\n");
+    printf("\nTesting Bug 04 \n\n");
+    printf("_____is game over checks all cards for end game condition - function should return true 3 piles empty\n\n");
 
-	// get current player
-	int currentPlayer = whoseTurn(&state);
-	int handPos = 4;// this is where the test card will go
+	// setup supply piles
 
-	// Fill current players hand up with coppers
-	for (i = 0; i < 5; i++) {
-		state.hand[currentPlayer][i] = copper;
-	}
-	// add/edit other cards to hand for testing
-	state.hand[currentPlayer][handPos] = mine; // add test card to hand to play
+	state.supplyCount[baron] = 0;
+	state.supplyCount[minion] = 0;
+	state.supplyCount[treasure_map] = 0;
 
-    memcpy(&testState, &state, sizeof(struct gameState));
-
-	// params for test
-	int card = mine;
-    int choice1 = 0; // there is a copper at hand index 0
-    int choice2 = silver;
-    int choice3 = 0; // not used for mine
-    int bonus = 0; // not used for mine
-
-    cardEffect(card, choice1, choice2, choice3, &testState, handPos, &bonus);
+	int gameOver = isGameOver(&state);
 
 	// played card count should be equal to state.playedCardCount + 1
 	// The only card that will be in played card count is the actual mine card
-    int fail = assert(state.playedCardCount + 1 , testState.playedCardCount);
+    int fail = assert(gameOver , 1);
 
     if(fail) {
-        printf("Failed - <Enter failed message>\n");
+        printf("Failed - isGameOver returned false \n");
     }
     else {
-        printf("Passed - <enter passed message>\n");
+        printf("Passed - isGameOver returned true\n");
     }
 }
 
