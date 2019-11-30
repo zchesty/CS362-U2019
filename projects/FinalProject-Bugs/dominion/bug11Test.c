@@ -198,6 +198,14 @@ void bugTest() {
             }
         }
 
+        //set playedCards and playedCardCount
+        G.playedCardCount = 0;
+        for (i = 0; i < randomDiscardCount; i++)
+        {
+            G.playedCards[i] = masterCardList[(rand() % 27)];
+            G.playedCardCount++;
+        }
+
 
         checkMinion(choice1, choice2, &G, currentPlayer, handPos, bonus);
     }
