@@ -24,7 +24,7 @@ void bugTest() {
 
     initializeGame(numPlayers, k, seed, &state);
 
-    printf("\nTesting Bug #03\n\n");
+    printf("\nTesting Bug #06\n\n");
     printf("Feast case allows gaining a card greater than 5\n\n");
 
     state.whoseTurn = 0;
