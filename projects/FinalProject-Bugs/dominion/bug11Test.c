@@ -20,7 +20,6 @@ void checkMinion(int choice1, int choice2, struct gameState *state, int currentP
     struct gameState control;
     memcpy (&control, state, sizeof(struct gameState));
 
-    int controlBonus = bonus;
     int card = minion;
     int choice3 = -1;
     int fail;
@@ -32,66 +31,27 @@ void checkMinion(int choice1, int choice2, struct gameState *state, int currentP
 
     if(choice1 == 1){
         //get two coins and discard minion since it has been played
-        controlBonus += 2;
-
-        control.discard[currentPlayer][control.discardCount[currentPlayer]] = control.hand[currentPlayer][handPos];
-        control.discardCount[currentPlayer]++;  //increment the count of cards in players discard pile
-
-        control.hand[currentPlayer][handPos] = -1;
-        control.hand[currentPlayer][handPos] = control.hand[currentPlayer][ (control.handCount[currentPlayer] - 1)];
-        control.hand[currentPlayer][control.handCount[currentPlayer] - 1] = -1;
-        control.handCount[currentPlayer]--;
+        control.coins += 2;
+        control.discardCount[control.whoseTurn]++;  //increment the count of cards in players discard pile
     }
     else if (choice2 == 1){
-        while (control.handCount[currentPlayer] > 0){
+        while (control.handCount[control.whoseTurn] > 0){
             //discard each card
-            control.discard[currentPlayer][control.discardCount[currentPlayer]] = control.hand[currentPlayer][0];
-            control.discardCount[currentPlayer]++;  //increment the count of cards in players discard pile
-            control.hand[currentPlayer][0] = -1;
-            control.hand[currentPlayer][0] = control.hand[currentPlayer][ (control.handCount[currentPlayer] - 1)];
-            control.hand[currentPlayer][control.handCount[currentPlayer] - 1] = -1;
-            control.handCount[currentPlayer]--;
+            control.discard[control.whoseTurn][control.discardCount[control.whoseTurn]] = control.hand[control.whoseTurn][0];
+            control.discardCount[control.whoseTurn]++;  //increment the count of cards in players discard pile
+            control.hand[control.whoseTurn][0] = -1;
+            control.hand[control.whoseTurn][0] = control.hand[control.whoseTurn][ (control.handCount[control.whoseTurn] - 1)];
+            control.hand[control.whoseTurn][control.handCount[control.whoseTurn] - 1] = -1;
+            control.handCount[control.whoseTurn]--;
         }
         //draw 4 cards for current player
         for(int x = 0; x < 4; x++){
             //assume there are enough cards in player's deck
-            control.hand[currentPlayer][control.handCount[currentPlayer]] = control.deck[currentPlayer][control.deckCount[currentPlayer] - 1];//Add card to end of hand
-            control.deckCount[currentPlayer]--;  //Decrement deck count
-            control.handCount[currentPlayer]++;  //Increment hand count
+            control.hand[control.whoseTurn][control.handCount[control.whoseTurn]] = control.deck[control.whoseTurn][control.deckCount[control.whoseTurn] - 1];//Add card to end of hand
+            control.deckCount[control.whoseTurn]--;  //Decrement deck count
+            control.handCount[control.whoseTurn]++;  //Increment hand count
         }
 
-
-
-        //other players discard hand and redraw if hand size > 4
-        for (int otherPlayer = 0; otherPlayer < control.numPlayers; otherPlayer++)
-        {
-            if (otherPlayer != currentPlayer)
-            {
-                //otherPlayer = 0 is current player. skip current player in this portion since we already did it above
-                if ( control.handCount[otherPlayer] > 4 )
-                {
-                    //discard hand
-                    while( control.handCount[otherPlayer] > 0 )
-                    {
-                        control.discard[otherPlayer][control.discardCount[otherPlayer]] = control.hand[otherPlayer][0];
-                        control.discardCount[otherPlayer]++;  //increment the count of cards in players discard pile
-                        control.hand[otherPlayer][0] = -1;
-                        control.hand[otherPlayer][0] = control.hand[otherPlayer][ (control.handCount[otherPlayer] - 1)];
-                        control.hand[otherPlayer][control.handCount[otherPlayer] - 1] = -1;
-                        control.handCount[otherPlayer]--;
-                    }
-
-                    //draw 4
-                    for (int j = 0; j < 4; j++)
-                    {
-                        //assume there are enough cards in player's deck
-                        control.hand[otherPlayer][control.handCount[otherPlayer]] = control.deck[otherPlayer][control.deckCount[otherPlayer] - 1];//Add card to end of hand
-                        control.deckCount[otherPlayer]--;  //Decrement deck count
-                        control.handCount[otherPlayer]++;  //Increment hand count
-                    }
-                }
-            }
-        }
     }
 
 
