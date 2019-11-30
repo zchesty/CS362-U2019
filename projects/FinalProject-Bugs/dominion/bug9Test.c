@@ -68,17 +68,6 @@ void bugTest() {
         printf("Passed - Number of actions are appropriate\n");
     }
 
-
-    //Test that number of coins added is correct
-    fail = assert(testState.coins, (state.coins + 2));
-
-    if(fail) {
-        printf("Failed - incorrect number of coins\n");
-    }
-    else {
-        printf("Passed - correct number of coins\n");
-    }
-
 }
 
 
