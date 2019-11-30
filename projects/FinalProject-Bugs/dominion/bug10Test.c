@@ -24,8 +24,8 @@ void bugTest() {
 
 	initializeGame(numPlayers, k, seed, &state);
 
-    printf("\nTesting Bug ####\n\n");
-    printf("_____Test name here\n\n");
+    printf("\nTesting Bug 10\n\n");
+    printf("_____Ambassador cards fails at counting cards above a certain index\n\n");
 
 	// get current player
 	int currentPlayer = whoseTurn(&state);
@@ -36,28 +36,30 @@ void bugTest() {
 		state.hand[currentPlayer][i] = copper;
 	}
 	// add/edit other cards to hand for testing
-	state.hand[currentPlayer][handPos] = mine; // add test card to hand to play
+	state.hand[currentPlayer][handPos] = ambassador; // add test card to hand to play
+	state.hand[currentPlayer][2] = feast;
+	state.hand[currentPlayer][3] = feast;
+
+	state.supplyCount[feast] = 8;
 
     memcpy(&testState, &state, sizeof(struct gameState));
 
 	// params for test
-	int card = mine;
-    int choice1 = 0; // there is a copper at hand index 0
-    int choice2 = silver;
+	int card = ambassador;
+    int choice1 = 2; // there is a feast at hand index 2
+    int choice2 = 2;
     int choice3 = 0; // not used for mine
     int bonus = 0; // not used for mine
 
     cardEffect(card, choice1, choice2, choice3, &testState, handPos, &bonus);
 
-	// played card count should be equal to state.playedCardCount + 1
-	// The only card that will be in played card count is the actual mine card
-    int fail = assert(state.playedCardCount + 1 , testState.playedCardCount);
+    int fail = assert(state.supplyCount[feast] + 1, testState.supplyCount[feast]);
 
     if(fail) {
-        printf("Failed - <Enter failed message>\n");
+        printf("Failed - 2 feasts were not returned\n");
     }
     else {
-        printf("Passed - <enter passed message>\n");
+        printf("Passed - 2 feast cards successfully returned\n");
     }
 }
 
