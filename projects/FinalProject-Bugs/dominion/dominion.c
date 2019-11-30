@@ -714,17 +714,23 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     case feast:
       //gain card with cost up to 5
       //Backup hand
+      //Following code commented out in order to target another bug
+      /*
       for (i = 0; i <= state->handCount[currentPlayer]; i++){
 	temphand[i] = state->hand[currentPlayer][i];//Backup card
 	state->hand[currentPlayer][i] = -1;//Set to nothing
       }
+      */
       //Backup hand
 
       //Update Coins for Buy
       updateCoins(currentPlayer, state, 5);
+
       x = 1;//Condition to loop on
       while( x == 1) {//Buy one card
 	if (supplyCount(choice1, state) <= 0){
+      x = 0;   //Add in order to test this case without entering an infinite loop
+
 	  if (DEBUG)
 	    printf("None of that card left, sorry!\n");
 
@@ -738,6 +744,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	  if (DEBUG){
 	    printf("Coins: %d < %d\n", state->coins, getCost(choice1));
 	  }
+      x = 0;  //Add in order to test this case without entering an infinite loop
 	}
 	else{
 
@@ -755,13 +762,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	}
       }     
 
+      //Following commented out because the prior section was commented out 
+      /*
       //Reset Hand
       for (i = 0; i <= state->handCount[currentPlayer]; i++){
 	state->hand[currentPlayer][i] = temphand[i];
 	temphand[i] = -1;
       }
       //Reset Hand
-      			
+      */	
+
       return 0;
 			
     case gardens:
