@@ -26,7 +26,7 @@ void checkMinion(int choice1, int choice2, struct gameState *state, int currentP
     int fail;
 
 
-    cardEffect(card, choice1, choice2, choice3, &testState, handPos, &bonus);
+    cardEffect(card, choice1, choice2, choice3, state, handPos, &bonus);
 
 
 
