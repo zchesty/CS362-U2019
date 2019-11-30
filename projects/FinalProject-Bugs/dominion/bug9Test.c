@@ -15,51 +15,79 @@ int assert(int got, int want) {
 }
 
 void bugTest() {
-    int i;
-	int seed = 1000;
-	int numPlayers = 2;
-	struct gameState state, testState;
-	int k[10] = {baron, feast, gardens, minion, mine, steward,
-			sea_hag, tribute, ambassador, council_room};
+    int i, choice1, choice2, choice3, handPos, bonus, card, fail;
+    int seed = 1000;
+    int numPlayers = 2;
+    struct gameState state, testState;
+    int k[10] = {baron, feast, gardens, minion, mine, steward,
+            minion, tribute, ambassador, council_room};
 
-	initializeGame(numPlayers, k, seed, &state);
+    initializeGame(numPlayers, k, seed, &state);
 
-    printf("\nTesting Bug ####\n\n");
-    printf("_____Test name here\n\n");
+    printf("\nTesting Bug #09\n\n");
+    printf("Tribute case incorrectly increases action count by 2\n\n");
 
-	// get current player
-	int currentPlayer = whoseTurn(&state);
-	int handPos = 4;// this is where the test card will go
+    state.whoseTurn = 0;
 
-	// Fill current players hand up with coppers
-	for (i = 0; i < 5; i++) {
-		state.hand[currentPlayer][i] = copper;
-	}
-	// add/edit other cards to hand for testing
-	state.hand[currentPlayer][handPos] = mine; // add test card to hand to play
+    // Fill current players hand up with coppers
+    for (i = 0; i < 5; i++) {
+        state.hand[state.whoseTurn][i] = copper;
+    }
+    state.handCount[state.whoseTurn] = 5;
+
+    state.discard[0][state.discardCount[0]] = copper;
+    state.discardCount[0]++;
 
     memcpy(&testState, &state, sizeof(struct gameState));
 
-	// params for test
-	int card = mine;
-    int choice1 = 0; // there is a copper at hand index 0
-    int choice2 = silver;
-    int choice3 = 0; // not used for mine
-    int bonus = 0; // not used for mine
+    // params for test
+    card = tribute;
+    choice1 = -1; 
+    choice2 = -1;
+    choice3 = -1;
+    bonus = 0; 
+    handPos = 0;
+
+    //Set last three cards in next player deck to copper
+    for(i=0; i<3; i++){
+        testState.deck[testState.whoseTurn + 1][testState.deckCount[testState.whoseTurn+1]] = copper; // add Feast to hand
+        testState.deckCount[testState.whoseTurn+1]++;
+    }
+
+    
 
     cardEffect(card, choice1, choice2, choice3, &testState, handPos, &bonus);
 
-	// played card count should be equal to state.playedCardCount + 1
-	// The only card that will be in played card count is the actual mine card
-    int fail = assert(state.playedCardCount + 1 , testState.playedCardCount);
+    //Test that number of actions have not changed. 
+    fail = assert(testState.numActions, state.numActions);
 
     if(fail) {
-        printf("Failed - <Enter failed message>\n");
+        printf("Failed - 2 more actions added\n");
     }
     else {
-        printf("Passed - <enter passed message>\n");
+        printf("Passed - Number of actions are appropriate\n");
     }
+
+
+    //Test that number of coins added is correct
+    fail = assert(testState.coins, (state.coins + 2));
+
+    if(fail) {
+        printf("Failed - incorrect number of coins\n");
+    }
+    else {
+        printf("Passed - correct number of coins\n");
+    }
+
 }
+
+
+
+
+/******************************************************************************
+ * Main
+******************************************************************************/
+
 
 int main(int argc, char *argv[])
 {
