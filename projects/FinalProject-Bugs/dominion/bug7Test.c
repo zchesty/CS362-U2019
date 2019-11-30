@@ -56,8 +56,6 @@ void bugTest() {
 
     cardEffect(card, choice1, choice2, choice3, &testState, handPos, &bonus);
 
-	// played card count should be equal to state.playedCardCount + 1
-	// The only card that will be in played card count is the actual mine card
 	int fail = assert(testState.coins, state.coins + 4);
 
     if(fail) {

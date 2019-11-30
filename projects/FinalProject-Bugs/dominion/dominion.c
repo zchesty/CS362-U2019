@@ -399,7 +399,7 @@ int isGameOver(struct gameState *state) {
 
   //if three supply pile are at 0, the game ends
   j = 0;
-  for (i = 0; i < 25; i++)
+  for (i = 0; i < 27; i++)
     {
       if (state->supplyCount[i] == 0)
 	{
@@ -805,7 +805,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	{
 	  if (state->hand[currentPlayer][i] == j)
 	    {
-	      discardCard(i, currentPlayer, state, 0);			
+	      discardCard(i, currentPlayer, state, 1);
 	      break;
 	    }
 	}
@@ -1027,11 +1027,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	} 
 	tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
-	state->deckCount[nextPlayer]--;
 	tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
 	state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
-	state->deckCount[nextPlayer]--;
-      }    
+      }
 		       
       if (tributeRevealedCards[0] == tributeRevealedCards[1]){//If we have a duplicate card, just drop one 
 	state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
@@ -1039,7 +1037,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	tributeRevealedCards[1] = -1;
       }
 
-      for (i = 0; i <= 2; i ++){
+      for (i = 0; i < 2; i ++){
 	if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold){//Treasure cards
 	  state->coins += 2;
 	}
@@ -1048,7 +1046,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	  drawCard(currentPlayer, state);
 	  drawCard(currentPlayer, state);
 	}
-	else{//Action Card
+	else if (tributeRevealedCards[i] == adventurer || tributeRevealedCards[i] == council_room || tributeRevealedCards[i] == feast || tributeRevealedCards[i] == mine || tributeRevealedCards[i] == remodel || tributeRevealedCards[i] == smithy || tributeRevealedCards[i] == village || tributeRevealedCards[i] == baron || tributeRevealedCards[i] == minion || tributeRevealedCards[i] == steward || tributeRevealedCards[i] == ambassador || tributeRevealedCards[i] == cutpurse || tributeRevealedCards[i] == embargo || tributeRevealedCards[i] == outpost || tributeRevealedCards[i] == salvager || tributeRevealedCards[i] == sea_hag || tributeRevealedCards[i] == treasure_map) {//Action Card
 	  state->numActions = state->numActions + 2;
 	}
       }
@@ -1070,7 +1068,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
       for (i = 0; i < state->handCount[currentPlayer]; i++)
 	{
-	  if (i != handPos && i == state->hand[currentPlayer][choice1] && i != choice1)
+	  if (i != handPos && state->hand[currentPlayer][i] == state->hand[currentPlayer][choice1])
 	    {
 	      j++;
 	    }
