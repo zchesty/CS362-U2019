@@ -72,7 +72,7 @@ void checkMinion(int choice1, int choice2, struct gameState *state, int currentP
 
 
 void bugTest() {
-    int i, j, n, currentPlayer, choice1, choice2, handPos, bonus, numPlayers, randomHandCount, randomDeckCount, randomDiscardCount, randomHandPos;
+    int i, j, n, currentPlayer, choice1, choice2, handPos, bonus, numPlayers, randomHandCount, randomDeckCount, randomDiscardCount, randomHandPos, available;
 
     int masterCardList[27] = {curse, estate, duchy, province, copper, silver, gold, adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall, minion, steward, tribute, ambassador, cutpurse, embargo, outpost, salvager, sea_hag, treasure_map};
 
@@ -81,16 +81,19 @@ void bugTest() {
 
     srand(time(NULL));
 
-    for (n = 0; n < 100; n++) {
+    for (n = 0; n < 50; n++) {
         numPlayers = (rand() % (MAX_PLAYERS-1))+2;     //Random number of players from 2 to 4
         currentPlayer = (rand() % (numPlayers - 1));    //random number from 0 to 3, representing 1 of 4 players
         choice1 = (rand() % 2);    //random either 0 or 1
         choice2 = (rand() % 2);    //random either 0 or 1
         bonus = rand() % 100;
+
+        available = MAX_DECK;
+
         randomDeckCount = (rand() % (MAX_DECK+1));
-        randomHandCount = (rand() % (MAX_HAND+1));
-        randomDiscardCount = randomDeckCount - (rand() % ((MAX_DECK/2)+1));
-        randomHandPos = (rand() % randomHandCount+1);
+        randomHandCount = (rand() % (((available-randomDeckCount)/2)+1));
+        randomDiscardCount = randomHandCount;
+        randomHandPos = (rand() % (randomHandCount+1));
 
         //random game state
         for (i = 0; i < sizeof(struct gameState); i++) {
