@@ -73,16 +73,16 @@ bug11Test: dominion.o rngs.o bug11Test.c
 
 unittestresults: bug1Test bug2Test bug3Test bug4Test bug5Test bug6Test bug7Test bug8Test bug9Test bug10Test bug11Test
 	./bug1Test &> unittestresults.out
-	./bug2Test &> unittestresults.out
-	./bug3Test &> unittestresults.out
-	./bug4Test &> unittestresults.out
-	./bug5Test &> unittestresults.out
-	./bug6Test &> unittestresults.out
-	./bug7Test &> unittestresults.out
-	./bug8Test &> unittestresults.out
-	./bug9Test &> unittestresults.out
-	./bug10Test &> unittestresults.out
-	./bug11Test &> unittestresults.out
+	./bug2Test >> unittestresults.out
+	./bug3Test >> unittestresults.out
+	./bug4Test >> unittestresults.out
+	./bug5Test >> unittestresults.out
+	./bug6Test >> unittestresults.out
+	./bug7Test >> unittestresults.out
+	./bug8Test >> unittestresults.out
+	./bug9Test >> unittestresults.out
+	./bug10Test >> unittestresults.out
+	./bug11Test >> unittestresults.out
 	gcov dominion.c -b -f >> unittestresults.out
 
 clean:
