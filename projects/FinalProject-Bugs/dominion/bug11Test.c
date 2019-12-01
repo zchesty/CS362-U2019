@@ -56,15 +56,15 @@ void checkMinion(int choice1, int choice2, struct gameState *state, int currentP
     }
     */
 
-
+   
     //Check on coin count
     fail = assert(state->coins, control.coins);
 
     if(fail) {
-        printf("Failed - coin count incorrect\n");
+        printf("Failed - coin count incorrect : choice1 = %d, choice2 = %d\n", choice1, choice2);
     }
     else {
-        printf("Passed - proper coin count\n");
+        printf("Passed - proper coin count : choice1 = %d, choice2 = %d\n", choice1, choice2);
     }
 
 }
@@ -72,7 +72,8 @@ void checkMinion(int choice1, int choice2, struct gameState *state, int currentP
 
 
 void bugTest() {
-    int i, j, n, currentPlayer, choice1, choice2, handPos, bonus, numPlayers, randomHandCount, randomDeckCount, randomDiscardCount, randomHandPos;
+    //printf("At the top of bugTest()\n");
+    int i, j, n, currentPlayer, choice1, choice2, handPos, bonus, numPlayers, randomHandCount, randomDeckCount, randomDiscardCount, randomHandPos, available;
 
     int masterCardList[27] = {curse, estate, duchy, province, copper, silver, gold, adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall, minion, steward, tribute, ambassador, cutpurse, embargo, outpost, salvager, sea_hag, treasure_map};
 
@@ -81,16 +82,31 @@ void bugTest() {
 
     srand(time(NULL));
 
-    for (n = 0; n < 100; n++) {
+    //printf("Right before 10000 Loop\n");
+    for (n = 0; n < 50; n++) {
+        //printf("Loop iteration: %d\n", n);
         numPlayers = (rand() % (MAX_PLAYERS-1))+2;     //Random number of players from 2 to 4
+        //printf("numPlayers: %d\n", numPlayers);
         currentPlayer = (rand() % (numPlayers - 1));    //random number from 0 to 3, representing 1 of 4 players
+        //printf("currentPlayer: %d\n", currentPlayer);
         choice1 = (rand() % 2);    //random either 0 or 1
+        //printf("choice1: %d\n", choice1);
         choice2 = (rand() % 2);    //random either 0 or 1
+        //printf("choice2: %d\n", choice2);
         bonus = rand() % 100;
+        //printf("bonus: %d\n", bonus);
+   
+        available = MAX_DECK;
+
         randomDeckCount = (rand() % (MAX_DECK+1));
-        randomHandCount = (rand() % (MAX_HAND+1));
-        randomDiscardCount = randomDeckCount - (rand() % ((MAX_DECK/2)+1));
-        randomHandPos = (rand() % randomHandCount+1);
+        //printf("randomDeckCount: %d\n", randomDeckCount);
+        randomHandCount = (rand() % (((available-randomDeckCount)/2)+1));
+        //printf("randomHandCount: %d\n", randomHandCount);
+        randomDiscardCount = randomHandCount;;
+        //printf("randomDiscardCount: %d\n", randomDiscardCount);
+        randomHandPos = (rand() % (randomHandCount+1));
+        //printf("randomHandPos: %d\n", randomHandPos);
+
 
         //random game state
         for (i = 0; i < sizeof(struct gameState); i++) {
@@ -102,6 +118,7 @@ void bugTest() {
 
         //set numActions
         G.numActions = rand() % 100;
+        //printf("G.numActions: %d\n", G.numActions);
 
         //set number of players
         G.numPlayers = numPlayers;
@@ -109,6 +126,7 @@ void bugTest() {
 
         //set numBuys
         G.numBuys = rand() % 500;
+        //printf("G.numBuys: %d\n", G.numBuys);
 
         //set all players deck
         for (i = 0; i < numPlayers; i++)
@@ -168,6 +186,7 @@ void bugTest() {
 
 int main(int argc, char *argv[])
 {
+    //printf("Calling bugTest() from main\n");
     bugTest();
     return 0;
 }
